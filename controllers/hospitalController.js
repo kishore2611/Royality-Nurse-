@@ -51,24 +51,38 @@ const postShift = async (req, res) => {
 
 const getShifts = async (req, res) => {
   try {
-    console.log(req.query);
+    console.log(req.query.jobTitle);
     // if (req.query == '') {
     //   return res.status(404).send({
     //     status: 0,
     //     message: "field should not be null",
     //   });
     // } else {
-      const apiFeature = new ApiFeatures(Hospital.find(), req.query)
-        .search()
-        .filter();
-      const shifts = await apiFeature.query;
+    const allshifts = await Hospital.find();
+    // console.log(allshifts);
 
-      console.log(apiFeature.query);
+
+
+    const apiFeature = new ApiFeatures(Hospital.find(), req.query)
+      .search()
+      .filter();
+    const shifts = await apiFeature.query;
+
+    if (req.query.jobTitle === '' || req.query.hospitalName === '') {
+      return res.status(200).send({
+        status: 1,
+        message: "all Shifts",
+        shifts: allshifts,
+      });
+    } else {
+      // console.log(apiFeature.query);
       return res.status(200).send({
         status: 1,
         message: "all Shifts",
         shifts,
       });
+    }
+
     // }
   } catch (error) {
     return res.status(400).send(error.message);

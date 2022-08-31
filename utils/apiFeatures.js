@@ -32,10 +32,11 @@ class ApiFeatures {
 
     let queryStr = JSON.stringify(queryCopy);
     const regex = /\b(gt|gte|lt|lte|in)\b/g;
-    // const REGEXP = /^$/;
+    const REGEXP = /^$/;
 
     // console.log(regex);
     queryStr = queryStr.replace(regex, (key) => `$${key}`);
+    queryStr = queryStr.replace(REGEXP);
 
     this.query = this.query.find(JSON.parse(queryStr));
 
