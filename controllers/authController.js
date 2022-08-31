@@ -180,7 +180,10 @@ const verifyUser = async (req, res) => {
                     expiresIn: "20hr",
                   }
                 );
-                User.findOneAndUpdate({ user_authentication: token }).exec();
+                User.findOneAndUpdate({
+                  user_authentication: token,
+                  user_device_token: req.body.user_device_token,
+                }).exec();
                 //  console.log(user[0].user_authentication);
                 user.user_authentication = token;
                 user.save();
@@ -319,7 +322,11 @@ const login = async (req, res) => {
                       expiresIn: "20hr",
                     }
                   );
-                  User.findOneAndUpdate({ user_authentication: token }).exec();
+                  User.findOneAndUpdate({
+                    user_authentication: token,
+                    user_device_token: req.body.user_device_token,
+                  }).exec();
+                  user[0].user_device_token = req.body.user_device_token;
                   user[0].user_authentication = token;
                   user[0].save();
                   return res.status(200).send({
@@ -592,13 +599,42 @@ const updatePassword = async (req, res) => {
 //LogOut
 const logOut = async (req, res) => {
   try {
+    if (!req.headers.authorization) {
+      res
+        .status(400)
+        .send({ status: 0, message: "Authentication Field is required" });
+    } else {
+      const updateUser = await User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          user_authentication: null,
+          user_device_type: null,
+          user_device_token: null,
+        },
+        { new: true }
+      );
+
+      // console.log(req.headers['authorization']);
+      res.removeHeader("authorization");
+
+      // res.removeheader('authorization');
+
+      // jwt.destroy(Token)
+
+      // console.log(Token);
+      res.status(200).send({
+        status: 1,
+        message: "User logout Successfully.",
+        updateUser,
+      });
+      // console.log(updateUser);
+    }
     // if (!req.body.user_id) {
     //     res.status(400).send({ status: 0, message: 'User ID field is required' });
     // }
     // else if (!req.headers.authorization) {
     //     res.status(400).send({ status: 0, message: 'Authentication Field is required' });
     // }
-     
 
     // res.headers('tolen', 'none', {
     // httpOnly: true

@@ -31,7 +31,7 @@ class ApiFeatures {
     // console.log(queryCopy);
 
     let queryStr = JSON.stringify(queryCopy);
-    const regex = /\b(gt|gte|lt|lte|in|^\s*$)\b/g;
+    const regex = /\b(gt|gte|lt|lte|in)\b/g;
     // const REGEXP = /^$/;
 
     // console.log(regex);

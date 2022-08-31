@@ -1,5 +1,5 @@
 var FCM = require("fcm-node");
-var serverKey = "serverkey"; //put your server key here
+var serverKey = "AAAAETKFmf4:APA91bEh9PXbXQgSg152znLNM8moWW-NkM69JGF6HAubiPDXES3jafjYrJoUSh59dJy_zTZK8JSgU_PHZqNRb3SVBvsRYpQjbBaaE6cRbiOXDGmasMW8CESdJXzK9tTylJIpxrnzLs2m"; //put your server key here
 var fcm = new FCM(serverKey);
 
 const push_notifications = (notification_obj) => {
